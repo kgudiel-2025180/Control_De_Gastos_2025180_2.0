@@ -1,0 +1,115 @@
+<div class="auth-shell">
+  <div class="bg" aria-hidden="true">
+    <div class="orb orb--violet"></div>
+    <div class="orb orb--blue"></div>
+    <div class="orb orb--cyan"></div>
+    <div class="grid-overlay"></div>
+  </div>
+
+  <main class="auth-main">
+    <section class="auth-card" aria-labelledby="login-title">
+      <header class="auth-brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 18V8l8 6 8-6v10" />
+          </svg>
+        </span>
+        <span class="brand-text">
+          <span class="brand-kicker">FINANZAS PERSONALES</span>
+          <span class="brand-name">Control de Gastos</span>
+        </span>
+      </header>
+
+      <div class="auth-greeting">
+        <h1 id="login-title">Bienvenido de nuevo</h1>
+        <p class="auth-subtitle">Ingresa tus credenciales y toma el control de tu dinero.</p>
+      </div>
+
+      <form class="login-form" (ngSubmit)="onSubmit($event)" novalidate>
+        <div class="field">
+          <label class="field-label" for="email">Correo electrónico</label>
+          <div class="control">
+            <span class="control-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="5" width="18" height="14" rx="2" />
+                <path d="m3 7 9 6 9-6" />
+              </svg>
+            </span>
+            <input class="control-input"
+                   id="email"
+                   type="email"
+                   placeholder="nombre@empresa.com"
+                   autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="password">Contraseña</label>
+          <div class="control control--has-action">
+            <span class="control-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="11" width="16" height="9" rx="2" />
+                <path d="M8 11V7a4 4 0 0 1 8 0v4" />
+              </svg>
+            </span>
+            <input class="control-input"
+                   id="password"
+                   [type]="showPassword() ? 'text' : 'password'"
+                   placeholder="Tu contraseña"
+                   autocomplete="current-password" />
+            <button class="toggle-password"
+                    type="button"
+                    (click)="togglePasswordVisibility()"
+                    [attr.aria-label]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+                    [attr.aria-pressed]="showPassword()">
+              @if (showPassword()) {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24" />
+                  <path d="M10.73 5.08A10.4 10.4 0 0 1 12 5c6.5 0 10 7 10 7a13.2 13.2 0 0 1-1.67 2.68" />
+                  <path d="M6.61 6.61A13.5 13.5 0 0 0 2 12s3.5 7 10 7a9.7 9.7 0 0 0 5.39-1.61" />
+                  <path d="m2 2 20 20" />
+                </svg>
+              } @else {
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
+                     stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              }
+            </button>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label class="checkbox">
+            <input type="checkbox" />
+            <span class="checkbox-box" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"
+                   stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20 6 9 17l-5-5" />
+              </svg>
+            </span>
+            <span>Recordarme</span>
+          </label>
+          <a class="link" routerLink="/recuperar">¿Olvidaste tu contraseña?</a>
+        </div>
+
+        <button class="btn-primary" type="submit">
+          <span>Ingresar a mi panel</span>
+        </button>
+      </form>
+    </section>
+
+    <footer class="auth-footer">
+      <span class="auth-footer-copy">© 2026 Control de Gastos. Tu dinero, bajo control.</span>
+      <nav class="auth-footer-links" aria-label="Enlaces legales">
+        <a href="#">Privacidad</a>
+        <a href="#">Términos</a>
+      </nav>
+    </footer>
+  </main>
+</div>
