@@ -1,0 +1,196 @@
+:root {
+  --color-bg: #070a17;
+  --color-surface: #0d1226;
+  --color-text: #eef1ff;
+  --color-text-muted: #a7b0d0;
+  --color-text-faint: #6b7399;
+  --color-primary: #6366f1;
+  --color-primary-2: #8b5cf6;
+  --color-danger: #f87171;
+  --color-success: #34d399;
+  --color-border: rgba(255, 255, 255, 0.13);
+  --radius: 14px;
+  --shadow: 0 10px 40px rgba(2, 4, 14, 0.5);
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --font-sans: 'Inter Variable', 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Space Grotesk Variable', 'Space Grotesk', 'Inter Variable', 'Inter', sans-serif;
+
+  /* Variables del login (tema Meridian/Control de Gastos) */
+  --c-bg: #f5f6f8;
+  --c-surface: #ffffff;
+  --c-border: #e4e7ec;
+  --c-border-strong: #d0d5dd;
+  --c-input-bg: #fbfbfc;
+
+  --c-text: #21262f;
+  --c-text-soft: #5d6570;
+  --c-text-faint: #98a0ab;
+
+  --c-accent: #46566b;
+  --c-accent-hover: #3b4959;
+  --c-accent-soft: rgba(70, 86, 107, 0.14);
+  --c-accent-tint: #eef1f4;
+
+  --c-error: #b0524a;
+  --c-error-bg: #fbf4f3;
+  --c-error-border: #ecd7d4;
+
+  --c-success: #6f8b78;
+  --c-success-tint: #eef3ef;
+
+  --radius-sm: 8px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background:
+    radial-gradient(1200px 800px at 85% -10%, rgba(99, 102, 241, 0.18), transparent 60%),
+    radial-gradient(1000px 700px at 10% 110%, rgba(139, 92, 246, 0.16), transparent 60%),
+    linear-gradient(160deg, #070a17 0%, #0c1023 45%, #0a0d1f 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  color-scheme: dark;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+}
+
+/* ─────────────── Controles de formulario (tema oscuro) ─────────────── */
+input,
+select,
+textarea {
+  font: inherit;
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0.6rem 0.75rem;
+  outline: none;
+  transition:
+    border-color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease),
+    background-color 0.2s var(--ease);
+}
+
+input::placeholder {
+  color: var(--color-text-faint);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(139, 92, 246, 0.75);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.22);
+}
+
+/* ─────────────── Tarjeta de vidrio ─────────────── */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 1.25rem;
+  backdrop-filter: blur(14px);
+}
+
+/* ─────────────── Botones ─────────────── */
+.btn {
+  padding: 0.55rem 1.1rem;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition:
+    transform 0.15s var(--ease),
+    box-shadow 0.2s var(--ease),
+    background-color 0.15s var(--ease),
+    color 0.15s var(--ease),
+    opacity 0.15s var(--ease);
+}
+
+.btn--primary {
+  background: linear-gradient(135deg, var(--color-primary-2), var(--color-primary) 55%, #3b82f6);
+  color: #ffffff;
+  box-shadow:
+    0 8px 26px rgba(99, 102, 241, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.btn--primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow:
+    0 14px 36px rgba(99, 102, 241, 0.55),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.btn--primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.btn--ghost {
+  background: rgba(255, 255, 255, 0.06);
+  color: #cbd5e1;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.btn--ghost:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.btn--danger {
+  background: linear-gradient(135deg, #f87171, #ef4444);
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3);
+}
+
+.btn--danger:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(239, 68, 68, 0.42);
+}
+
+.icon-btn {
+  display: inline-grid;
+  place-items: center;
+  border: none;
+  background: transparent;
+  color: var(--color-text-faint);
+  padding: 0.35rem;
+  border-radius: 8px;
+  transition:
+    color 0.15s var(--ease),
+    background-color 0.15s var(--ease);
+}
+
+.icon-btn:hover {
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
