@@ -1,0 +1,13 @@
+node_modules/
+dist/
+out-tsc/
+.env
+.env.local
+.env.*.local
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+/Kenny_Gudiell_2025180.docx
