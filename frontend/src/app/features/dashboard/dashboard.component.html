@@ -1,0 +1,184 @@
+<div class="dashboard">
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo-area">
+      <div class="logo-img">
+        <img src="assets/logo.png" alt="FINTECH Logo" />
+      </div>
+      <span class="logo-kicker">FINTECH</span>
+      <span class="logo-title">Control de Gastos</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-link nav-link--active">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        </svg>
+        <span>Principal</span>
+      </a>
+      <a class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+          <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+        </svg>
+        <span>Ver transacciones</span>
+      </a>
+      <a class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M9 14h6"/>
+        </svg>
+        <span>Ingresos</span>
+      </a>
+      <a class="nav-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+        </svg>
+        <span>Mi tarjeta</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-avatar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <span class="user-name">{{ name() || 'admin' }}</span>
+      <button class="btn-logout" type="button" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- CENTER PANEL -->
+  <main class="center">
+    <div class="center-header">
+      <h1 class="center-title">Movimientos Financieros (M).</h1>
+      <div class="search-box">
+        <input type="text" placeholder="Buscar" />
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- CHART -->
+    <div class="chart-card">
+      <div class="chart-legend">
+        <span class="legend-item"><i class="dot dot--cyan"></i> Income</span>
+        <span class="legend-item"><i class="dot dot--magenta"></i> Outgoing</span>
+        <span class="legend-item"><i class="dot dot--purple"></i> Purchases</span>
+        <span class="legend-item"><i class="bar-icon"></i> Financial Movements</span>
+      </div>
+      <div class="chart-wrap">
+        <svg viewBox="0 0 620 220" preserveAspectRatio="xMidYMid meet" class="chart-svg">
+          <!-- Y-axis labels -->
+          <g class="axis-labels" fill="rgba(255,255,255,0.35)" font-size="10" font-family="Source Code Pro, monospace" text-anchor="end">
+            <text x="32" y="18">1500</text>
+            <text x="32" y="48">1000</text>
+            <text x="32" y="78">500</text>
+            <text x="32" y="108">0</text>
+            <text x="32" y="138">-500</text>
+            <text x="32" y="168">-1000</text>
+            <text x="32" y="198">-1500</text>
+          </g>
+
+          <!-- Grid lines -->
+          <g stroke="rgba(255,255,255,0.06)" stroke-width="0.5">
+            <line x1="40" y1="15" x2="610" y2="15"/>
+            <line x1="40" y1="45" x2="610" y2="45"/>
+            <line x1="40" y1="75" x2="610" y2="75"/>
+            <line x1="40" y1="105" x2="610" y2="105"/>
+            <line x1="40" y1="135" x2="610" y2="135"/>
+            <line x1="40" y1="165" x2="610" y2="165"/>
+            <line x1="40" y1="195" x2="610" y2="195"/>
+          </g>
+
+          <!-- Zero line emphasis -->
+          <line x1="40" y1="105" x2="610" y2="105" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
+
+          <!-- X-axis labels -->
+          <g class="axis-labels" fill="rgba(255,255,255,0.35)" font-size="10" font-family="Source Code Pro, monospace" text-anchor="middle">
+            <text x="68" y="215">Ene</text>
+            <text x="115" y="215">Feb</text>
+            <text x="162" y="215">Mar</text>
+            <text x="209" y="215">Abr</text>
+            <text x="256" y="215">May</text>
+            <text x="303" y="215">Jun</text>
+            <text x="350" y="215">Jul</text>
+            <text x="397" y="215">Ago</text>
+            <text x="444" y="215">Sep</text>
+            <text x="491" y="215">Oct</text>
+            <text x="538" y="215">Nov</text>
+            <text x="575" y="215">Dic</text>
+          </g>
+          <text x="325" y="215" fill="rgba(255,255,255,0.25)" font-size="9" font-family="Source Code Pro, monospace" text-anchor="middle">Mensual</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-card">
+      <h2 class="table-title">Últimos movimientos o transacciones recientes</h2>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Editor</th>
+              <th>Reciente</th>
+              <th>Compras</th>
+              <th>Quetzales</th>
+              <th>Talón</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- RIGHT PANEL -->
+  <aside class="right">
+    <button class="btn-add-card" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="12" y1="12" x2="12" y2="8"/><line x1="12" y1="12" x2="8" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/>
+      </svg>
+      Añadir nueva tarjeta
+    </button>
+
+    <div class="card-stat card-stat--total">
+      <span class="stat-label">Total</span>
+      <span class="stat-value stat-value--cyan">Q 0.00</span>
+    </div>
+
+    <div class="card-stat card-stat--gastos">
+      <span class="stat-label">Gastos recientes</span>
+      <span class="stat-value stat-value--red">Q 0.00</span>
+    </div>
+
+    <div class="card-stat card-stat--ahorro">
+      <span class="stat-label">Ahorro</span>
+      <span class="stat-value stat-value--white">Q 0.00</span>
+      <div class="ahorro-bar"></div>
+    </div>
+
+    <div class="right-actions">
+      <button class="btn-cyan btn-cyan--solid" type="button">Agregar nueva transacción</button>
+      <button class="btn-cyan btn-cyan--outline" type="button">Analizar ingresos y gastos</button>
+    </div>
+  </aside>
+
+  <!-- SESSION MODAL -->
+  @if (sessionExpired()) {
+    <div class="session-modal" role="alertdialog" aria-modal="true" aria-labelledby="expired-title">
+      <div class="session-modal-card">
+        <span class="session-modal-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
+          </svg>
+        </span>
+        <h2 id="expired-title">Tu sesión ha caducado, por favor inicia sesión de nuevo</h2>
+        <button class="btn-back" type="button" (click)="backToLogin()">Ir al login</button>
+      </div>
+    </div>
+  }
+</div>
