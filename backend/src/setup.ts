@@ -1,4 +1,5 @@
 import 'dotenv/config';
+import bcrypt from 'bcryptjs';
 import { pool } from './db';
 
 async function setup(): Promise<void> {
@@ -35,6 +36,22 @@ async function setup(): Promise<void> {
       description TEXT
     )
   `);
+
+  const demoPassword = await bcrypt.hash('demo1234', 10);
+  await pool.query(
+    `INSERT INTO users (email, password, name)
+     VALUES ('demo@guate.tech', $1, 'Usuario Demo')
+     ON CONFLICT (email) DO NOTHING`,
+    [demoPassword],
+  );
+
+  const adminPassword = await bcrypt.hash('admin12345', 10);
+  await pool.query(
+    `INSERT INTO users (email, password, name)
+     VALUES ('admin@guate.tech', $1, 'admin')
+     ON CONFLICT (email) DO NOTHING`,
+    [adminPassword],
+  );
 
   console.log('Base de datos lista.');
 }
