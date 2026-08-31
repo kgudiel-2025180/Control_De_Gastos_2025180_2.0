@@ -1,47 +1,154 @@
 <div class="auth-shell">
   <div class="bg" aria-hidden="true">
-    <div class="orb orb--violet"></div>
+    <div class="orb orb--red"></div>
     <div class="orb orb--blue"></div>
     <div class="orb orb--cyan"></div>
     <div class="grid-overlay"></div>
   </div>
 
+  <aside class="auth-side">
+    <div class="side-inner">
+      <div class="auth-logo" aria-hidden="true">
+        <span class="logo-ring"></span>
+        <svg viewBox="0 0 140 150" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="neonGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="2.5" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <filter id="neonGlowStrong" x="-40%" y="-40%" width="180%" height="180%">
+              <feGaussianBlur stdDeviation="4" result="blur"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+            <linearGradient id="coinGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#ff0040"/>
+              <stop offset="100%" stop-color="#00e5ff"/>
+            </linearGradient>
+            <linearGradient id="shieldFill" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0c0c14"/>
+              <stop offset="100%" stop-color="#06060c"/>
+            </linearGradient>
+          </defs>
+
+          <path d="M70 6 L120 28 L126 78 L100 118 L70 132 L40 118 L14 78 L20 28 Z"
+                fill="url(#shieldFill)" stroke="#18182a" stroke-width="1.5"/>
+
+          <path d="M70 12 L114 32 L120 76 L96 112 L70 126 L44 112 L20 76 L26 32 Z"
+                fill="none" stroke="#00e5ff" stroke-width="1.8" filter="url(#neonGlow)" opacity="0.9"/>
+
+          <path d="M70 20 L106 37 L112 74 L92 106 L70 118 L48 106 L28 74 L34 37 Z"
+                fill="none" stroke="#00e5ff" stroke-width="0.7" opacity="0.35"/>
+
+          <g stroke="#00e5ff" fill="none" opacity="0.14">
+            <line x1="36" y1="46" x2="104" y2="46" stroke-width="0.5"/>
+            <line x1="39" y1="58" x2="101" y2="58" stroke-width="0.4"/>
+            <line x1="52" y1="22" x2="52" y2="120" stroke-width="0.3"/>
+            <line x1="88" y1="22" x2="88" y2="120" stroke-width="0.3"/>
+            <circle cx="52" cy="46" r="1.5" fill="#00e5ff" opacity="0.35"/>
+            <circle cx="88" cy="58" r="1.5" fill="#00e5ff" opacity="0.35"/>
+          </g>
+
+          <circle cx="70" cy="82" r="24" fill="#08080e"
+                  stroke="url(#coinGrad)" stroke-width="2.2" filter="url(#neonGlow)"/>
+          <circle cx="70" cy="82" r="19" fill="none" stroke="rgba(0,229,255,0.25)" stroke-width="0.6"/>
+
+          <text x="70" y="94" text-anchor="middle"
+                font-family="'Segoe UI', 'Arial Black', Arial, sans-serif"
+                font-weight="900" font-size="32"
+                fill="url(#coinGrad)" filter="url(#neonGlowStrong)">Q</text>
+
+          <path d="M34 100 L54 82 L66 90 L104 58"
+                stroke="#ff0040" stroke-width="2.4" stroke-linecap="round" filter="url(#neonGlow)"/>
+          <path d="M88 58 L104 58 L104 74"
+                stroke="#00e5ff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" filter="url(#neonGlowStrong)"/>
+
+          <rect x="32" y="138" width="76" height="10" rx="5"
+                fill="rgba(0,229,255,0.06)" stroke="#00e5ff" stroke-width="0.8"
+                filter="url(#neonGlow)" opacity="0.85"/>
+          <text x="70" y="146.5" text-anchor="middle"
+                font-family="'Segoe UI', Arial, sans-serif"
+                font-weight="700" font-size="7" letter-spacing="3.5"
+                fill="#00e5ff" filter="url(#neonGlow)">FINTECH</text>
+        </svg>
+      </div>
+
+      <div class="side-brand">
+        <span class="brand-kicker">FINTECH</span>
+        <span class="brand-name">Control de Gastos</span>
+      </div>
+
+      <p class="side-tagline">
+        Tu dinero, bajo control. Una plataforma moderna para registrar, visualizar y dominar tus finanzas personales.
+      </p>
+
+      <div class="bars" aria-hidden="true">
+        <i style="--h: 34%"></i>
+        <i style="--h: 58%"></i>
+        <i style="--h: 42%"></i>
+        <i style="--h: 74%"></i>
+        <i style="--h: 52%"></i>
+        <i style="--h: 88%"></i>
+        <i style="--h: 62%"></i>
+        <i style="--h: 96%"></i>
+        <i style="--h: 70%"></i>
+        <i style="--h: 45%"></i>
+        <i style="--h: 80%"></i>
+        <i style="--h: 56%"></i>
+      </div>
+    </div>
+  </aside>
+
   <main class="auth-main">
     <section class="auth-card" aria-labelledby="login-title">
       <header class="auth-brand">
-        <span class="brand-mark" aria-hidden="true">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
-               stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 18V8l8 6 8-6v10" />
-          </svg>
-        </span>
         <span class="brand-text">
-          <span class="brand-kicker">FINANZAS PERSONALES</span>
+<span class="brand-kicker">FINTECH</span>
           <span class="brand-name">Control de Gastos</span>
         </span>
       </header>
 
       <div class="auth-greeting">
-        <h1 id="login-title">Bienvenido de nuevo</h1>
-        <p class="auth-subtitle">Ingresa tus credenciales y toma el control de tu dinero.</p>
+        <h1 id="login-title">Bienvenido <em>de nuevo</em></h1>
+        <p class="auth-subtitle">Ingresa tus credenciales para acceder a tu panel.</p>
       </div>
 
-      <form class="login-form" (ngSubmit)="onSubmit($event)" novalidate>
+      @if (error()) {
+        <div class="auth-error" role="alert">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"
+               stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4" />
+            <path d="M12 16h.01" />
+          </svg>
+          <span>{{ error() }}</span>
+        </div>
+      }
+
+      <form class="login-form" (ngSubmit)="onSubmit()" novalidate>
         <div class="field">
-          <label class="field-label" for="email">Correo electrónico</label>
+          <label class="field-label" for="username">Usuario</label>
           <div class="control">
             <span class="control-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
                    stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="5" width="18" height="14" rx="2" />
-                <path d="m3 7 9 6 9-6" />
+                <circle cx="12" cy="8" r="4" />
+                <path d="M4 21a8 8 0 0 1 16 0" />
               </svg>
             </span>
             <input class="control-input"
-                   id="email"
-                   type="email"
-                   placeholder="nombre@empresa.com"
-                   autocomplete="email" />
+                   id="username"
+                   name="username"
+                   type="text"
+                   placeholder="Tu usuario"
+                   autocomplete="username"
+                   [(ngModel)]="username" />
           </div>
         </div>
 
@@ -57,9 +164,11 @@
             </span>
             <input class="control-input"
                    id="password"
+                   name="password"
                    [type]="showPassword() ? 'text' : 'password'"
                    placeholder="Tu contraseña"
-                   autocomplete="current-password" />
+                   autocomplete="current-password"
+                   [(ngModel)]="password" />
             <button class="toggle-password"
                     type="button"
                     (click)="togglePasswordVisibility()"
@@ -98,18 +207,19 @@
           <a class="link" routerLink="/recuperar">¿Olvidaste tu contraseña?</a>
         </div>
 
-        <button class="btn-primary" type="submit">
-          <span>Ingresar a mi panel</span>
+        <button class="btn-primary" type="submit" [disabled]="loading()">
+          @if (loading()) {
+            <span class="btn-spinner" aria-hidden="true"></span>
+            <span>Ingresando…</span>
+          } @else {
+            <span>Acceder a mi panel</span>
+          }
         </button>
       </form>
     </section>
 
     <footer class="auth-footer">
       <span class="auth-footer-copy">© 2026 Control de Gastos. Tu dinero, bajo control.</span>
-      <nav class="auth-footer-links" aria-label="Enlaces legales">
-        <a href="#">Privacidad</a>
-        <a href="#">Términos</a>
-      </nav>
     </footer>
   </main>
 </div>
