@@ -1,0 +1,294 @@
+<div class="dashboard">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo-area">
+      <div class="logo-img">
+        <img src="assets/logo.png" alt="FINTECH Logo" />
+      </div>
+      <span class="logo-kicker">FINTECH</span>
+      <span class="logo-title">Control de Gastos</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-link" routerLink="/dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        </svg>
+        <span>Principal</span>
+      </a>
+      <a class="nav-link" routerLink="/dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+          <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+        </svg>
+        <span>Ver transacciones</span>
+      </a>
+      <a class="nav-link nav-link--active" routerLink="/ingresos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M9 14h6"/>
+        </svg>
+        <span>Ingresos</span>
+      </a>
+      <a class="nav-link" routerLink="/dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+        </svg>
+        <span>Mi tarjeta</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-row">
+        <div class="user-avatar">
+          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="avatarGrad2" x1="6" y1="10" x2="26" y2="28" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#19DCE8" stop-opacity="0.95"/>
+                <stop offset="100%" stop-color="#F21D5A" stop-opacity="0.95"/>
+              </linearGradient>
+            </defs>
+            <circle cx="16" cy="11.6" r="5.2" fill="#8EA0B1"/>
+            <path d="M7.2 23.4c0-2.75 3.95-5 8.8-5s8.8 2.25 8.8 5v1.55c0 1.85-2.15 3.4-5.55 4.05 -1.35 0.25-2.55 0.35-3.25 0.35 -3.15 0-5.55-1.15-5.55-2.95v-3z" fill="#8EA0B1"/>
+            <path d="M7.2 23.4c0-2.75 3.95-5 8.8-5s8.8 2.25 8.8 5v1.55c0 1.85-2.15 3.4-5.55 4.05 -1.35 0.25-2.55 0.35-3.25 0.35 -3.15 0-5.55-1.15-5.55-2.95v-3z" fill="url(#avatarGrad2)" opacity="0.38"/>
+          </svg>
+        </div>
+        <span class="user-name">{{ name() || 'admin' }}</span>
+      </div>
+      <button class="btn-logout" type="button" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="center ingresos-main">
+    <div class="center-header">
+      <h1 class="center-title">Gestión de Ingresos</h1>
+      <div class="header-actions">
+        <div class="search-box">
+          <input type="text" placeholder="Buscar..." [ngModel]="search()" (ngModelChange)="search.set($event)" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    @if (error()) {
+      <div class="error-banner">{{ error() }}</div>
+    }
+
+    <!-- Bento Grid -->
+    <div class="bento-grid">
+      <!-- Chart -->
+      <div class="chart-card bento-chart">
+        <div class="chart-header">
+          <h3>Evolución de Ingresos (6 Meses)</h3>
+          <span class="chart-legend"><i class="dot dot--magenta"></i> Ingresos</span>
+        </div>
+        <div class="chart-wrap">
+          <svg viewBox="0 0 800 250" preserveAspectRatio="xMidYMid meet" class="chart-svg">
+            <!-- grid -->
+            <g stroke="rgba(255,255,255,0.06)" stroke-width="0.5">
+              <line x1="40" y1="50" x2="800" y2="50"/><line x1="40" y1="100" x2="800" y2="100"/>
+              <line x1="40" y1="150" x2="800" y2="150"/><line x1="40" y1="200" x2="800" y2="200"/>
+            </g>
+            <!-- Y labels -->
+            <g fill="rgba(255,255,255,0.35)" font-size="10" font-family="Source Code Pro, monospace" text-anchor="end">
+              <text x="30" y="55">{{ chartMax() | number:'1.0-0' }}</text>
+              <text x="30" y="105">{{ (chartMax()*0.75) | number:'1.0-0' }}</text>
+              <text x="30" y="155">{{ (chartMax()*0.5) | number:'1.0-0' }}</text>
+              <text x="30" y="205">{{ (chartMax()*0.25) | number:'1.0-0' }}</text>
+              <text x="30" y="245">0</text>
+            </g>
+            <!-- X labels -->
+            <g fill="rgba(255,255,255,0.35)" font-size="10" font-family="Source Code Pro, monospace" text-anchor="middle">
+              @for (m of chartData(); track m.label; let i = $index) {
+                <text [attr.x]="50 + i * ((780-50)/5)" y="245">{{ m.label }}</text>
+              }
+            </g>
+            <!-- line -->
+            <path [attr.d]="chartPath()" class="chart-line"></path>
+            <!-- points -->
+            @for (p of chartPoints(); track p.x) {
+              <circle [attr.cx]="p.x" [attr.cy]="p.y" r="4" fill="#0F1520" stroke="#F21D5A" stroke-width="2"/>
+            }
+          </svg>
+        </div>
+      </div>
+
+      <!-- Right rail -->
+      <div class="bento-rail">
+        <button class="btn-add-card" type="button" (click)="openCreate()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+          Registrar Ingreso
+        </button>
+
+        <div class="card-stat card-stat--total">
+          <span class="stat-label">Total Mensual</span>
+          <div class="stat-row">
+            <span class="stat-value stat-value--cyan">Q {{ totalMensual() | number:'1.2-2' }}</span>
+          </div>
+          <div class="mini-bar"><div class="mini-bar-fill" [style.width.%]="totalMensual() ? 70 : 0"></div></div>
+          <span class="stat-hint" [class.positive]="variacion() >= 0" [class.negative]="variacion() < 0">
+            {{ variacion() >= 0 ? '+' : '' }}{{ variacion() }}% vs mes anterior
+          </span>
+        </div>
+
+        <div class="card-stat">
+          <span class="stat-label">Fuentes Activas</span>
+          <div class="fuentes-list">
+            @for (f of fuentesActivas(); track f.name) {
+              <div class="fuente-row">
+                <span class="fuente-name">{{ f.name }}</span>
+                <span class="fuente-pct">{{ f.pct }}%</span>
+              </div>
+            } @empty {
+              <span class="empty-hint">Sin ingresos aún</span>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <div class="table-head-row">
+        <h2 class="table-title">Ingresos Recientes</h2>
+        <span class="table-count">{{ filteredIncomes().length }} registros</span>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Origen</th>
+              <th>Fecha</th>
+              <th>Categoría</th>
+              @if (isAdmin()) { <th>Usuario</th> }
+              <th style="text-align:right">Monto</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of filteredIncomes(); track row.id) {
+              <tr>
+                <td>
+                  <span class="cell-origin">
+                    <span class="origin-icon" [style.borderColor]="row.categoryColor || getCategoryColor(row.category)" [style.color]="row.categoryColor || getCategoryColor(row.category)">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M8 10h8"/></svg>
+                    </span>
+                    {{ row.description || '—' }}
+                  </span>
+                </td>
+                <td>{{ row.date }}</td>
+                <td>
+                  <span class="cat-badge" [style.background]="(row.categoryColor || getCategoryColor(row.category)) + '18'" [style.borderColor]="(row.categoryColor || getCategoryColor(row.category)) + '40'" [style.color]="row.categoryColor || getCategoryColor(row.category)">
+                    {{ row.categoryName || getCategoryName(row.category) || 'Sin categoría' }}
+                  </span>
+                </td>
+                @if (isAdmin()) {
+                  <td>
+                    <span class="user-cell">{{ row.user?.name || '—' }}</span>
+                    <span class="user-email">{{ row.user?.email || '' }}</span>
+                  </td>
+                }
+                <td style="text-align:right" class="amount-pos">Q {{ row.amount | number:'1.2-2' }}</td>
+                <td class="actions-cell">
+                  <button class="icon-btn" type="button" (click)="openEdit(row)" title="Editar">✎</button>
+                  <button class="icon-btn icon-btn--danger" type="button" (click)="delete(row.id)" title="Eliminar">✕</button>
+                </td>
+              </tr>
+            } @empty {
+              <tr>
+                <td [attr.colspan]="isAdmin() ? 6 : 5" class="empty-row">No hay ingresos. Registre su primer ingreso.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Próximo ingreso banner -->
+    <div class="next-banner">
+      <div class="next-left">
+        <span class="next-icon">◷</span>
+        <div>
+          <span class="next-kicker">Próximo Ingreso Estimado</span>
+          <span class="next-title">{{ totalMensual() > 0 ? 'Proyección basada en promedio mensual' : 'Sin proyección aún' }}</span>
+        </div>
+      </div>
+      <div class="next-right">
+        <span class="next-date">{{ chartData()[chartData().length-1]?.label || '—' }}</span>
+        <span class="next-amount">Q {{ totalMensual() | number:'1.2-2' }}</span>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal -->
+  @if (showModal()) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <h3>{{ editingId() ? 'Editar Ingreso' : 'Registrar Ingreso' }}</h3>
+
+        <label>
+          <span>Origen / Descripción</span>
+          <input type="text" [(ngModel)]="formDescription" placeholder="Ej. Salario TechCorp" />
+        </label>
+
+        <div class="form-row">
+          <label>
+            <span>Monto (Q)</span>
+            <input type="number" [(ngModel)]="formAmount" placeholder="0.00" min="0" step="0.01" />
+          </label>
+          <label>
+            <span>Fecha</span>
+            <input type="date" [(ngModel)]="formDate" />
+          </label>
+        </div>
+
+        <label>
+          <span>Categoría</span>
+          <div class="cat-select-row">
+            <select [(ngModel)]="formCategory">
+              <option [ngValue]="null">Sin categoría</option>
+              @for (cat of categories(); track cat.id) {
+                <option [ngValue]="cat.id">{{ cat.name }}</option>
+              }
+            </select>
+            <button class="btn-small" type="button" (click)="showCategoryForm.set(!showCategoryForm())">+ Nueva</button>
+          </div>
+        </label>
+
+        @if (showCategoryForm()) {
+          <div class="category-form">
+            <strong>Nueva categoría (dinámica)</strong>
+            <input type="text" [(ngModel)]="catName" placeholder="Nombre (ej. Salario)" />
+            <div class="form-row">
+              <input type="text" [(ngModel)]="catIcon" placeholder="Icono (work, brush...)" />
+              <input type="color" [(ngModel)]="catColor" />
+              <input type="number" [(ngModel)]="catBudget" placeholder="Presupuesto" />
+            </div>
+            <button class="btn-cyan btn-cyan--solid" type="button" (click)="createCategory()">Crear categoría</button>
+          </div>
+        }
+
+        <div class="modal-actions">
+          <button class="btn-cyan btn-cyan--outline" type="button" (click)="closeModal()">Cancelar</button>
+          <button class="btn-add-card" type="button" (click)="save()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (sessionExpired()) {
+    <div class="session-modal" role="alertdialog" aria-modal="true" aria-labelledby="expired-title">
+      <div class="session-modal-card">
+        <span class="session-modal-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
+          </svg>
+        </span>
+        <h2 id="expired-title">Su sesión ha caducado, por favor inicie sesión nuevamente</h2>
+        <button class="btn-back" type="button" (click)="backToLogin()">Ir al login</button>
+      </div>
+    </div>
+  }
+</div>
