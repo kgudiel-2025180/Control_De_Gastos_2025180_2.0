@@ -10,9 +10,11 @@ async function setup(): Promise<void> {
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       email TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
-      name TEXT NOT NULL
+      name TEXT NOT NULL,
+      role TEXT NOT NULL DEFAULT 'USER' CHECK (role IN ('ADMIN','USER'))
     )
   `);
+  await pool.query(`ALTER TABLE users ADD COLUMN IF NOT EXISTS role TEXT NOT NULL DEFAULT 'USER' CHECK (role IN ('ADMIN','USER'))`);
 
   await pool.query(`
     CREATE TABLE IF NOT EXISTS categories (
@@ -39,18 +41,26 @@ async function setup(): Promise<void> {
 
   const demoPassword = await bcrypt.hash('demo1234', 10);
   await pool.query(
-    `INSERT INTO users (email, password, name)
-     VALUES ('demo@guate.tech', $1, 'Usuario Demo')
-     ON CONFLICT (email) DO NOTHING`,
+    `INSERT INTO users (email, password, name, role)
+     VALUES ('demo@guate.tech', $1, 'Usuario Demo', 'USER')
+     ON CONFLICT (email) DO UPDATE SET role = EXCLUDED.role`,
     [demoPassword],
   );
 
   const adminPassword = await bcrypt.hash('admin12345', 10);
   await pool.query(
-    `INSERT INTO users (email, password, name)
-     VALUES ('admin@guate.tech', $1, 'admin')
-     ON CONFLICT (email) DO NOTHING`,
+    `INSERT INTO users (email, password, name, role)
+     VALUES ('admin@guate.tech', $1, 'admin', 'ADMIN')
+     ON CONFLICT (email) DO UPDATE SET role = 'ADMIN'`,
     [adminPassword],
+  );
+
+  const userPassword = await bcrypt.hash('user1234', 10);
+  await pool.query(
+    `INSERT INTO users (email, password, name, role)
+     VALUES ('user@guate.tech', $1, 'usuario', 'USER')
+     ON CONFLICT (email) DO UPDATE SET role = 'USER'`,
+    [userPassword],
   );
 
   console.log('Base de datos lista.');
