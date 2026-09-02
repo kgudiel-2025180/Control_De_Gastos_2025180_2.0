@@ -85,7 +85,7 @@
       </div>
 
       <p class="side-tagline">
-        Tu dinero, bajo control. Una plataforma moderna para registrar, visualizar y dominar tus finanzas personales.
+        Su dinero, bajo control. Una plataforma moderna para registrar, visualizar y dominar sus finanzas personales.
       </p>
 
       <div class="bars" aria-hidden="true">
@@ -116,7 +116,7 @@
 
       <div class="auth-greeting">
         <h1 id="login-title">Bienvenido <em>de nuevo</em></h1>
-        <p class="auth-subtitle">Ingresa tus credenciales para acceder a tu panel.</p>
+        <p class="auth-subtitle">Ingrese sus credenciales para acceder a su panel.</p>
       </div>
 
       @if (error()) {
@@ -146,7 +146,7 @@
                    id="username"
                    name="username"
                    type="text"
-                   placeholder="Tu usuario"
+                    placeholder="Su usuario"
                    autocomplete="username"
                    [(ngModel)]="username" />
           </div>
@@ -166,7 +166,7 @@
                    id="password"
                    name="password"
                    [type]="showPassword() ? 'text' : 'password'"
-                   placeholder="Tu contraseña"
+                    placeholder="Su contraseña"
                    autocomplete="current-password"
                    [(ngModel)]="password" />
             <button class="toggle-password"
@@ -204,7 +204,7 @@
             </span>
             <span>Recordarme</span>
           </label>
-          <a class="link" routerLink="/recuperar">¿Olvidaste tu contraseña?</a>
+          <a class="link" routerLink="/recuperar">¿Olvidó su contraseña?</a>
         </div>
 
         <button class="btn-primary" type="submit" [disabled]="loading()">
@@ -212,14 +212,14 @@
             <span class="btn-spinner" aria-hidden="true"></span>
             <span>Ingresando…</span>
           } @else {
-            <span>Acceder a mi panel</span>
+            <span>Acceder a su panel</span>
           }
         </button>
       </form>
     </section>
 
     <footer class="auth-footer">
-      <span class="auth-footer-copy">© 2026 Control de Gastos. Tu dinero, bajo control.</span>
+      <span class="auth-footer-copy">© 2026 Control de Gastos. Su dinero, bajo control.</span>
     </footer>
   </main>
 </div>
