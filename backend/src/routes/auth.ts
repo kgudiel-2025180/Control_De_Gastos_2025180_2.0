@@ -22,9 +22,10 @@ interface UserRow {
   email: string;
   password: string;
   name: string;
+  role: string;
 }
 
-const TOKEN_TTL_SECONDS = 300; // 5 minutos
+const TOKEN_TTL_SECONDS = 1500; // 25 minutos
 
 authRouter.post('/register', async (req, res) => {
   try {
@@ -48,7 +49,7 @@ authRouter.post('/register', async (req, res) => {
 
     const hash = await bcrypt.hash(password, 10);
     const result = await pool.query<UserRow>(
-      'INSERT INTO users (email, password, name) VALUES ($1, $2, $3) RETURNING id, email, name',
+      `INSERT INTO users (email, password, name, role) VALUES ($1, $2, $3, 'USER') RETURNING id, email, name, role`,
       [email.trim().toLowerCase(), hash, name.trim()],
     );
     const row = result.rows[0];
@@ -58,7 +59,7 @@ authRouter.post('/register', async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: row.id },
+      { userId: row.id, role: row.role },
       process.env.JWT_SECRET ?? 'control-gastos-secret-dev',
       { expiresIn: TOKEN_TTL_SECONDS },
     );
@@ -66,7 +67,7 @@ authRouter.post('/register', async (req, res) => {
     res.status(201).json({
       token,
       expiresIn: TOKEN_TTL_SECONDS,
-      user: { id: row.id, email: row.email, name: row.name },
+      user: { id: row.id, email: row.email, name: row.name, role: row.role },
     });
   } catch (error) {
     console.error('Error en /auth/register:', error);
@@ -84,7 +85,7 @@ authRouter.post('/login', async (req, res) => {
     }
 
     const result = await pool.query<UserRow>(
-      'SELECT id, email, password, name FROM users WHERE email = $1 OR name = $1',
+      'SELECT id, email, password, name, role FROM users WHERE email = $1 OR name = $1',
       [identifier],
     );
     const row = result.rows[0];
@@ -100,7 +101,7 @@ authRouter.post('/login', async (req, res) => {
     }
 
     const token = jwt.sign(
-      { userId: row.id },
+      { userId: row.id, role: row.role },
       process.env.JWT_SECRET ?? 'control-gastos-secret-dev',
       { expiresIn: TOKEN_TTL_SECONDS },
     );
@@ -108,7 +109,7 @@ authRouter.post('/login', async (req, res) => {
     res.json({
       token,
       expiresIn: TOKEN_TTL_SECONDS,
-      user: { id: row.id, email: row.email, name: row.name },
+      user: { id: row.id, email: row.email, name: row.name, role: row.role },
     });
   } catch (error) {
     console.error('Error en /auth/login:', error);

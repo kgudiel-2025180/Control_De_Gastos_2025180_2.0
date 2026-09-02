@@ -13,6 +13,12 @@ interface TransactionRow {
   category_id: string | null;
   date: string;
   description: string | null;
+  user_id?: string;
+  user_name?: string;
+  user_email?: string;
+  category_name?: string | null;
+  category_color?: string | null;
+  category_icon?: string | null;
 }
 
 function mapTransaction(row: TransactionRow) {
@@ -23,6 +29,8 @@ function mapTransaction(row: TransactionRow) {
     category: row.category_id,
     date: row.date,
     ...(row.description ? { description: row.description } : {}),
+    ...(row.user_name ? { user: { id: row.user_id, name: row.user_name, email: row.user_email } } : {}),
+    ...(row.category_name ? { categoryName: row.category_name, categoryColor: row.category_color, categoryIcon: row.category_icon } : {}),
   };
 }
 
@@ -60,6 +68,19 @@ function validateBody(
 
 transactionsRouter.get('/', async (req: AuthRequest, res) => {
   try {
+    if (req.userRole === 'ADMIN') {
+      const result = await pool.query<TransactionRow>(
+        `SELECT t.id, t.amount, t.type, t.category_id, TO_CHAR(t.date, 'YYYY-MM-DD') AS date, t.description,
+                t.user_id, u.name AS user_name, u.email AS user_email,
+                c.name AS category_name, c.color AS category_color, c.icon AS category_icon
+         FROM transactions t
+         JOIN users u ON u.id = t.user_id
+         LEFT JOIN categories c ON c.id = t.category_id
+         ORDER BY t.date DESC`,
+      );
+      res.json(result.rows.map(mapTransaction));
+      return;
+    }
     const result = await pool.query<TransactionRow>(
       `SELECT id, amount, type, category_id, TO_CHAR(date, 'YYYY-MM-DD') AS date, description
        FROM transactions
@@ -102,6 +123,10 @@ transactionsRouter.post('/', async (req: AuthRequest, res) => {
 
 transactionsRouter.put('/:id', async (req: AuthRequest, res) => {
   try {
+    if (req.userRole !== 'ADMIN') {
+      res.status(403).json({ message: 'Solo un usuario administrador puede realizar esta acción' });
+      return;
+    }
     const body = validateBody(req.body as TransactionBody);
     if (typeof body === 'string') {
       res.status(400).json({ message: body });
@@ -111,9 +136,9 @@ transactionsRouter.put('/:id', async (req: AuthRequest, res) => {
     const result = await pool.query<TransactionRow>(
       `UPDATE transactions
        SET amount = $3, type = $4, category_id = $5, date = $6, description = $7
-       WHERE id = $1 AND user_id = $2
+       WHERE id = $1
        RETURNING id, amount, type, category_id, TO_CHAR(date, 'YYYY-MM-DD') AS date, description`,
-      [req.params.id, req.userId, body.amount, body.type, body.category, body.date, body.description],
+      [req.params.id, body.amount, body.type, body.category, body.date, body.description],
     );
     const updated = result.rows[0];
     if (!updated) {
@@ -129,9 +154,13 @@ transactionsRouter.put('/:id', async (req: AuthRequest, res) => {
 
 transactionsRouter.delete('/:id', async (req: AuthRequest, res) => {
   try {
+    if (req.userRole !== 'ADMIN') {
+      res.status(403).json({ message: 'Solo un usuario administrador puede realizar esta acción' });
+      return;
+    }
     const result = await pool.query(
-      'DELETE FROM transactions WHERE id = $1 AND user_id = $2',
-      [req.params.id, req.userId],
+      'DELETE FROM transactions WHERE id = $1',
+      [req.params.id],
     );
     if (result.rowCount === 0) {
       res.status(404).json({ message: 'Transacción no encontrada' });

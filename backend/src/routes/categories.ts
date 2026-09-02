@@ -55,6 +55,13 @@ function validateBody(body: CategoryBody): Omit<CategoryRow, 'id'> | string {
 
 categoriesRouter.get('/', async (req: AuthRequest, res) => {
   try {
+    if (req.userRole === 'ADMIN') {
+      const result = await pool.query<CategoryRow>(
+        'SELECT id, name, icon, color, budget_limit FROM categories ORDER BY name',
+      );
+      res.json(result.rows.map(mapCategory));
+      return;
+    }
     const result = await pool.query<CategoryRow>(
       'SELECT id, name, icon, color, budget_limit FROM categories WHERE user_id = $1 ORDER BY name',
       [req.userId],
