@@ -6,18 +6,19 @@ const API_URL = 'http://localhost:3000';
 const TOKEN_KEY = 'control_gastos_token';
 const USER_KEY = 'control_gastos_user';
 const EXPIRES_KEY = 'control_gastos_expires';
-const SESSION_DURATION_MS = 300 * 1000; // 5 minutos, sincronizado con backend
+const SESSION_DURATION_MS = 25 * 60 * 1000; // 25 minutos sincronizado con backend
 
 export interface LoginResponse {
   token: string;
   expiresIn: number;
-  user: { id: string; email: string; name: string };
+  user: { id: string; email: string; name: string; role: string };
 }
 
 export interface AuthUser {
   id: string;
   email: string;
   name: string;
+  role: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -79,5 +80,9 @@ export class AuthService {
 
   isLoggedIn(): boolean {
     return Boolean(this.token && this.expiresAt > Date.now());
+  }
+
+  isAdmin(): boolean {
+    return this.user?.role === 'ADMIN';
   }
 }
