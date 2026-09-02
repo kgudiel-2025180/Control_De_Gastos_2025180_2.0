@@ -10,26 +10,26 @@
     </div>
 
     <nav class="sidebar-nav">
-      <a class="nav-link nav-link--active">
+      <a class="nav-link nav-link--active" routerLink="/dashboard">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
         </svg>
         <span>Principal</span>
       </a>
-      <a class="nav-link">
+      <a class="nav-link" routerLink="/dashboard">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
           <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
         </svg>
         <span>Ver transacciones</span>
       </a>
-      <a class="nav-link">
+      <a class="nav-link" routerLink="/ingresos">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M9 14h6"/>
         </svg>
         <span>Ingresos</span>
       </a>
-      <a class="nav-link">
+      <a class="nav-link" routerLink="/dashboard">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
         </svg>
@@ -38,13 +38,25 @@
     </nav>
 
     <div class="sidebar-user">
-      <div class="user-avatar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
-        </svg>
+      <div class="user-row">
+        <div class="user-avatar">
+          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="avatarGrad" x1="6" y1="10" x2="26" y2="28" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#19DCE8" stop-opacity="0.95"/>
+                <stop offset="100%" stop-color="#F21D5A" stop-opacity="0.95"/>
+              </linearGradient>
+            </defs>
+            <!-- cabeza -->
+            <circle cx="16" cy="11.6" r="5.2" fill="#8EA0B1"/>
+            <!-- hombros base -->
+            <path d="M7.2 23.4c0-2.75 3.95-5 8.8-5s8.8 2.25 8.8 5v1.55c0 1.85-2.15 3.4-5.55 4.05 -1.35 0.25-2.55 0.35-3.25 0.35 -3.15 0-5.55-1.15-5.55-2.95v-3z" fill="#8EA0B1"/>
+            <!-- degradado sutil sobre hombros (como en el mockup) -->
+            <path d="M7.2 23.4c0-2.75 3.95-5 8.8-5s8.8 2.25 8.8 5v1.55c0 1.85-2.15 3.4-5.55 4.05 -1.35 0.25-2.55 0.35-3.25 0.35 -3.15 0-5.55-1.15-5.55-2.95v-3z" fill="url(#avatarGrad)" opacity="0.38"/>
+          </svg>
+        </div>
+        <span class="user-name">{{ name() || 'admin' }}</span>
       </div>
-      <span class="user-name">{{ name() || 'admin' }}</span>
       <button class="btn-logout" type="button" (click)="logout()">Cerrar sesión</button>
     </div>
   </aside>
@@ -54,7 +66,7 @@
     <div class="center-header">
       <h1 class="center-title">Movimientos Financieros (M).</h1>
       <div class="search-box">
-        <input type="text" placeholder="Buscar" />
+        <input type="text" placeholder="Buscar" [ngModel]="search()" (ngModelChange)="search.set($event)" />
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
         </svg>
@@ -64,22 +76,20 @@
     <!-- CHART -->
     <div class="chart-card">
       <div class="chart-legend">
-        <span class="legend-item"><i class="dot dot--cyan"></i> Income</span>
-        <span class="legend-item"><i class="dot dot--magenta"></i> Outgoing</span>
-        <span class="legend-item"><i class="dot dot--purple"></i> Purchases</span>
-        <span class="legend-item"><i class="bar-icon"></i> Financial Movements</span>
+        <span class="legend-item"><i class="dot dot--cyan"></i> Ingresos</span>
+        <span class="legend-item"><i class="dot dot--magenta"></i> Salidas</span>
+        <span class="legend-item"><i class="dot dot--purple"></i> Compras</span>
+        <span class="legend-item"><i class="bar-icon"></i> Movimientos Financieros</span>
       </div>
       <div class="chart-wrap">
         <svg viewBox="0 0 620 220" preserveAspectRatio="xMidYMid meet" class="chart-svg">
           <!-- Y-axis labels -->
-          <g class="axis-labels" fill="rgba(255,255,255,0.35)" font-size="10" font-family="Source Code Pro, monospace" text-anchor="end">
-            <text x="32" y="18">1500</text>
-            <text x="32" y="48">1000</text>
-            <text x="32" y="78">500</text>
+          <g class="axis-labels" fill="rgba(255,255,255,0.35)" font-size="9" font-family="Source Code Pro, monospace" text-anchor="end">
+            <text x="32" y="18">{{ chartMax() | number:'1.0-0' }}</text>
+            <text x="32" y="58">{{ (chartMax()*0.5) | number:'1.0-0' }}</text>
             <text x="32" y="108">0</text>
-            <text x="32" y="138">-500</text>
-            <text x="32" y="168">-1000</text>
-            <text x="32" y="198">-1500</text>
+            <text x="32" y="148">{{ (-chartMax()*0.5) | number:'1.0-0' }}</text>
+            <text x="32" y="188">{{ (-chartMax()) | number:'1.0-0' }}</text>
           </g>
 
           <!-- Grid lines -->
@@ -96,20 +106,15 @@
           <!-- Zero line emphasis -->
           <line x1="40" y1="105" x2="610" y2="105" stroke="rgba(255,255,255,0.12)" stroke-width="0.5"/>
 
+          <!-- Data lines -->
+          <path [attr.d]="chartIngresosPath()" fill="none" stroke="#19DCE8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 6px rgba(25,220,232,0.5))"/>
+          <path [attr.d]="chartGastosPath()" fill="none" stroke="#F21D5A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="filter: drop-shadow(0 0 6px rgba(242,29,90,0.5))"/>
+
           <!-- X-axis labels -->
-          <g class="axis-labels" fill="rgba(255,255,255,0.35)" font-size="10" font-family="Source Code Pro, monospace" text-anchor="middle">
-            <text x="68" y="215">Ene</text>
-            <text x="115" y="215">Feb</text>
-            <text x="162" y="215">Mar</text>
-            <text x="209" y="215">Abr</text>
-            <text x="256" y="215">May</text>
-            <text x="303" y="215">Jun</text>
-            <text x="350" y="215">Jul</text>
-            <text x="397" y="215">Ago</text>
-            <text x="444" y="215">Sep</text>
-            <text x="491" y="215">Oct</text>
-            <text x="538" y="215">Nov</text>
-            <text x="575" y="215">Dic</text>
+          <g class="axis-labels" fill="rgba(255,255,255,0.35)" font-size="9" font-family="Source Code Pro, monospace" text-anchor="middle">
+            @for (m of chartData(); track m.label; let i = $index) {
+              <text [attr.x]="68 + i * 46" y="215">{{ m.label }}</text>
+            }
           </g>
           <text x="325" y="215" fill="rgba(255,255,255,0.25)" font-size="9" font-family="Source Code Pro, monospace" text-anchor="middle">Mensual</text>
         </svg>
@@ -123,14 +128,33 @@
         <table class="data-table">
           <thead>
             <tr>
-              <th>Editor</th>
-              <th>Reciente</th>
-              <th>Compras</th>
+              <th>Descripción</th>
+              <th>Fecha</th>
+              <th>Categoría</th>
               <th>Quetzales</th>
               <th>Talón</th>
             </tr>
           </thead>
-          <tbody></tbody>
+          <tbody>
+            @for (row of filtered(); track row.id) {
+              <tr>
+                <td>
+                  <span class="cell-origin">
+                    <span class="type-dot" [style.background]="row.type === 'INCOME' ? '#19DCE8' : '#F21D5A'"></span>
+                    {{ row.description || '—' }}
+                  </span>
+                </td>
+                <td>{{ row.date }}</td>
+                <td>{{ getCategoryName(row.category) || (row.type === 'INCOME' ? 'Ingreso' : 'Gasto') }}</td>
+                <td [style.color]="row.type === 'INCOME' ? '#19DCE8' : '#F21D5A'">
+                  {{ row.type === 'INCOME' ? '+' : '-' }}Q {{ row.amount | number:'1.2-2' }}
+                </td>
+                <td>Q {{ row.amount | number:'1.2-2' }}</td>
+              </tr>
+            } @empty {
+              <tr><td colspan="5" style="text-align:center; color: var(--text-faint); padding: 24px;">Sin movimientos aún</td></tr>
+            }
+          </tbody>
         </table>
       </div>
     </div>
@@ -138,7 +162,7 @@
 
   <!-- RIGHT PANEL -->
   <aside class="right">
-    <button class="btn-add-card" type="button">
+    <button class="btn-add-card" type="button" routerLink="/ingresos">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="12" y1="12" x2="12" y2="8"/><line x1="12" y1="12" x2="8" y2="12"/><line x1="12" y1="12" x2="16" y2="12"/>
       </svg>
@@ -147,23 +171,23 @@
 
     <div class="card-stat card-stat--total">
       <span class="stat-label">Total</span>
-      <span class="stat-value stat-value--cyan">Q 0.00</span>
+      <span class="stat-value stat-value--cyan">Q {{ total() | number:'1.2-2' }}</span>
     </div>
 
     <div class="card-stat card-stat--gastos">
       <span class="stat-label">Gastos recientes</span>
-      <span class="stat-value stat-value--red">Q 0.00</span>
+      <span class="stat-value stat-value--red">Q {{ gastosTotales() | number:'1.2-2' }}</span>
     </div>
 
     <div class="card-stat card-stat--ahorro">
       <span class="stat-label">Ahorro</span>
-      <span class="stat-value stat-value--white">Q 0.00</span>
-      <div class="ahorro-bar"></div>
+      <span class="stat-value stat-value--white">Q {{ ahorro() | number:'1.2-2' }}</span>
+      <div class="ahorro-bar" [style.background]="ahorro() > 0 ? 'linear-gradient(90deg, var(--cyan) 60%, rgba(255,255,255,0.08) 60%)' : 'rgba(255,255,255,0.08)'"></div>
     </div>
 
     <div class="right-actions">
-      <button class="btn-cyan btn-cyan--solid" type="button">Agregar nueva transacción</button>
-      <button class="btn-cyan btn-cyan--outline" type="button">Analizar ingresos y gastos</button>
+      <button class="btn-cyan btn-cyan--solid" type="button" routerLink="/ingresos">Agregar nueva transacción</button>
+      <button class="btn-cyan btn-cyan--outline" type="button" routerLink="/ingresos">Analizar ingresos y gastos</button>
     </div>
   </aside>
 
@@ -176,7 +200,7 @@
             <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
           </svg>
         </span>
-        <h2 id="expired-title">Tu sesión ha caducado, por favor inicia sesión de nuevo</h2>
+        <h2 id="expired-title">Su sesión ha caducado, por favor inicie sesión nuevamente</h2>
         <button class="btn-back" type="button" (click)="backToLogin()">Ir al login</button>
       </div>
     </div>
