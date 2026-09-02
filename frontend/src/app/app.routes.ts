@@ -16,5 +16,12 @@ export const routes: Routes = [
     loadComponent: () =>
       import('./features/dashboard/dashboard.component').then((m) => m.DashboardComponent),
   },
+  {
+    path: 'ingresos',
+    title: 'Ingresos · Control de Gastos',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./features/ingresos/ingresos.component').then((m) => m.IngresosComponent),
+  },
   { path: '**', redirectTo: 'login' },
 ];
