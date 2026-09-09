@@ -453,8 +453,39 @@ export class TransaccionesComponent implements OnInit, OnDestroy {
       this.error.set('La fecha es obligatoria');
       return;
     }
+
+    // Validar que el gasto no exceda el saldo disponible (ingresos - egresos)
+    const amount = Number(this.formAmount);
+    const ingresos = this.transactions()
+      .filter((t) => t.type === 'INCOME')
+      .reduce((acc, t) => acc + t.amount, 0);
+    const egresos = this.transactions()
+      .filter((t) => t.type === 'EXPENSE')
+      .reduce((acc, t) => acc + t.amount, 0);
+    const saldoDisponible = ingresos - egresos;
+
+    // Si es un gasto nuevo, verificar que no exceda el saldo
+    if (!this.editingId() && amount > saldoDisponible) {
+      this.error.set(
+        `Saldo insuficiente. Disponible: Q ${saldoDisponible.toFixed(2)}, intenta gastar: Q ${amount.toFixed(2)}`,
+      );
+      return;
+    }
+    // Si es una edición, verificar considerando que ya se descontaba el monto anterior
+    if (this.editingId()) {
+      const gastoAnterior = this.transactions().find((t) => t.id === this.editingId());
+      const montoAnterior = gastoAnterior?.amount ?? 0;
+      const saldoAjustado = saldoDisponible + montoAnterior;
+      if (amount > saldoAjustado) {
+        this.error.set(
+          `Saldo insuficiente. Disponible: Q ${saldoAjustado.toFixed(2)}, intenta gastar: Q ${amount.toFixed(2)}`,
+        );
+        return;
+      }
+    }
+
     const payload = {
-      amount: Number(this.formAmount),
+      amount,
       type: 'EXPENSE' as const,
       category: this.formCategory,
       date: this.formDate,
