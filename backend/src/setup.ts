@@ -39,6 +39,19 @@ async function setup(): Promise<void> {
     )
   `);
 
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS cards (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      user_id UUID UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+      number TEXT NOT NULL,
+      holder TEXT NOT NULL,
+      expiry TEXT NOT NULL,
+      cvv TEXT NOT NULL,
+      status TEXT NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'FROZEN')),
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    )
+  `);
+
   const demoPassword = await bcrypt.hash('demo1234', 10);
   await pool.query(
     `INSERT INTO users (email, password, name, role)

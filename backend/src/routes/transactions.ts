@@ -135,7 +135,7 @@ transactionsRouter.put('/:id', async (req: AuthRequest, res) => {
 
     const result = await pool.query<TransactionRow>(
       `UPDATE transactions
-       SET amount = $3, type = $4, category_id = $5, date = $6, description = $7
+       SET amount = $2, type = $3, category_id = $4, date = $5, description = $6
        WHERE id = $1
        RETURNING id, amount, type, category_id, TO_CHAR(date, 'YYYY-MM-DD') AS date, description`,
       [req.params.id, body.amount, body.type, body.category, body.date, body.description],
