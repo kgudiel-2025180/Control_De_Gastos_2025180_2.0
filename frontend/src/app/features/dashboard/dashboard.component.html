@@ -113,7 +113,7 @@
           <!-- X-axis labels -->
           <g class="axis-labels" fill="rgba(255,255,255,0.35)" font-size="9" font-family="Source Code Pro, monospace" text-anchor="middle">
             @for (m of chartData(); track m.label; let i = $index) {
-              <text [attr.x]="68 + i * 46" y="215">{{ m.label }}</text>
+              <text [attr.x]="50 + i * (560 / (chartData().length - 1 || 1))" y="215">{{ m.label }}</text>
             }
           </g>
           <text x="325" y="215" fill="rgba(255,255,255,0.25)" font-size="9" font-family="Source Code Pro, monospace" text-anchor="middle">Mensual</text>

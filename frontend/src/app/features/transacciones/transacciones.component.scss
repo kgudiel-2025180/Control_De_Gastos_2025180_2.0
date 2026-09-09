@@ -565,6 +565,10 @@
 
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .cat-select-row { display: flex; gap: 8px; select { flex: 1; } }
+select option {
+  background-color: #0F1520;
+  color: #f0f0f2;
+}
 
 .btn-small {
   padding: 0 12px;
