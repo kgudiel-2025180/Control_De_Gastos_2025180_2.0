@@ -6,6 +6,20 @@ import { AuthService } from '../../services/auth.service';
 import { CategoriesService, Category } from '../../services/categories.service';
 import { TransactionsService, Transaction } from '../../services/transactions.service';
 
+/** Redondea a un "nice number" para que la escala de la gráfica reaccione mejor a los cambios */
+function niceCeil(v: number): number {
+  const steps = [100, 250, 500, 1000, 1500, 2000, 3000, 4000, 5000, 7500, 10000, 15000, 20000, 30000, 50000, 75000, 100000];
+  for (const s of steps) {
+    if (v <= s) return s;
+  }
+  return Math.ceil(v / 100000) * 100000;
+}
+
+/** Convierte 'YYYY-MM-DD' a Date local (medianoche) para evitar desfases UTC */
+function parseLocalDate(date: string): Date {
+  return new Date(`${date}T00:00:00`);
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -66,14 +80,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
       const ingresos = this.transactions()
         .filter((t) => t.type === 'INCOME')
         .filter((t) => {
-          const td = new Date(t.date);
+          const td = parseLocalDate(t.date);
           return td.getMonth() === m && td.getFullYear() === y;
         })
         .reduce((acc, t) => acc + t.amount, 0);
       const gastos = this.transactions()
         .filter((t) => t.type === 'EXPENSE')
         .filter((t) => {
-          const td = new Date(t.date);
+          const td = parseLocalDate(t.date);
           return td.getMonth() === m && td.getFullYear() === y;
         })
         .reduce((acc, t) => acc + t.amount, 0);
@@ -83,8 +97,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   });
 
   readonly chartMax = computed(() => {
-    const max = Math.max(...this.chartData().flatMap((m) => [m.ingresos, m.gastos]), 1000);
-    return Math.ceil(max / 1000) * 1000 || 1000;
+    const max = Math.max(...this.chartData().flatMap((m) => [m.ingresos, m.gastos]), 100);
+    return niceCeil(max);
   });
 
   ngOnInit(): void {

@@ -1,0 +1,311 @@
+<div class="dashboard">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo-area">
+      <div class="logo-img">
+        <img src="assets/logo.png" alt="FINTECH Logo" />
+      </div>
+      <span class="logo-kicker">FINTECH</span>
+      <span class="logo-title">Control de Gastos</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-link" routerLink="/dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        </svg>
+        <span>Principal</span>
+      </a>
+      <a class="nav-link nav-link--active" routerLink="/transacciones">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+          <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+        </svg>
+        <span>Ver transacciones</span>
+      </a>
+      <a class="nav-link" routerLink="/ingresos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M9 14h6"/>
+        </svg>
+        <span>Ingresos</span>
+      </a>
+      <a class="nav-link" routerLink="/tarjeta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+        </svg>
+        <span>Mi tarjeta</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-row">
+        <div class="user-avatar">
+          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="avatarGradTx" x1="6" y1="10" x2="26" y2="28" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#19DCE8" stop-opacity="0.95"/>
+                <stop offset="100%" stop-color="#F21D5A" stop-opacity="0.95"/>
+              </linearGradient>
+            </defs>
+            <circle cx="16" cy="11.6" r="5.2" fill="#8EA0B1"/>
+            <path d="M7.2 23.4c0-2.75 3.95-5 8.8-5s8.8 2.25 8.8 5v1.55c0 1.85-2.15 3.4-5.55 4.05 -1.35 0.25-2.55 0.35-3.25 0.35 -3.15 0-5.55-1.15-5.55-2.95v-3z" fill="#8EA0B1"/>
+            <path d="M7.2 23.4c0-2.75 3.95-5 8.8-5s8.8 2.25 8.8 5v1.55c0 1.85-2.15 3.4-5.55 4.05 -1.35 0.25-2.55 0.35-3.25 0.35 -3.15 0-5.55-1.15-5.55-2.95v-3z" fill="url(#avatarGradTx)" opacity="0.38"/>
+          </svg>
+        </div>
+        <span class="user-name">{{ name() || 'admin' }}</span>
+      </div>
+      <button class="btn-logout" type="button" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- CENTER PANEL -->
+  <main class="center">
+    <div class="center-header">
+      <h1 class="center-title">Gestión de Egresos</h1>
+      <div class="header-actions">
+        <div class="search-box">
+          <input type="text" placeholder="Buscar..." [ngModel]="search()" (ngModelChange)="search.set($event)" />
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+        <button class="btn-cta" type="button" (click)="openCreate()">Registrar gasto</button>
+      </div>
+    </div>
+
+    @if (loading()) {
+      <div class="error-banner">Cargando egresos...</div>
+    }
+    @if (error()) {
+      <div class="error-banner error-banner--danger">{{ error() }}</div>
+    }
+
+    <!-- KPI CARDS ROW -->
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <span class="kpi-label">TOTAL EGRESOS (MES)</span>
+        <span class="stat-value stat-value--red">Q {{ formatQ(egresosMes()) }}</span>
+        <span class="kpi-note">{{ variacionPctLabel() }}</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">GASTO MÁXIMO</span>
+        <span class="stat-value stat-value--cyan">{{ formatQ(gastoMaximo().amount) }}</span>
+        <span class="kpi-note">{{ gastoMaximo().name }}</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">TOP CATEGORÍA</span>
+        <span class="stat-value stat-value--white">{{ topCategoria().name }}</span>
+        <span class="kpi-note">Q {{ formatQ(topCategoria().amount) }} · {{ topCategoria().pct }}%</span>
+      </div>
+      <div class="kpi-card">
+        <span class="kpi-label">SALDO DISPONIBLE</span>
+        <span class="stat-value stat-value--cyan">Q {{ formatQ(saldoDisponible()) }}</span>
+        <span class="kpi-note">{{ diasRestantes() }} días · Q {{ formatQ(sugeridoDiario()) }}/día</span>
+      </div>
+    </section>
+    <section class="chart-row">
+      <div class="chart-card chart-card--grow">
+        <div class="chart-legend">
+          <span class="legend-item"><span class="dot dot--magenta"></span>Egresos</span>
+          <span class="legend-item"><span class="dot dot--cyan"></span>Media</span>
+          <div class="range-pills">
+            <button class="range-pill" [class.range-pill--active]="range() === 'SEM'" type="button" (click)="setRange('SEM')">SEM</button>
+            <button class="range-pill" [class.range-pill--active]="range() === 'MES'" type="button" (click)="setRange('MES')">MES</button>
+            <button class="range-pill" [class.range-pill--active]="range() === 'AÑO'" type="button" (click)="setRange('AÑO')">AÑO</button>
+          </div>
+        </div>
+        <h3 class="table-title">Evolución de Egresos ({{ rangeLabel() }})</h3>
+        <div class="chart-wrap">
+          <svg class="chart-svg" viewBox="0 0 700 200" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="expenseGradientTx" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%" stop-color="#F21D5A" stop-opacity="0.32"/>
+                <stop offset="100%" stop-color="#F21D5A" stop-opacity="0"/>
+              </linearGradient>
+              <filter id="neonGlowTx" height="140%" width="140%" x="-20%" y="-20%">
+                <feGaussianBlur result="blur" stdDeviation="3"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <line stroke="#162031" stroke-dasharray="3 3" x1="0" x2="700" y1="20" y2="20"/>
+            <line stroke="#162031" stroke-dasharray="3 3" x1="0" x2="700" y1="65" y2="65"/>
+            <line stroke="#162031" stroke-dasharray="3 3" x1="0" x2="700" y1="110" y2="110"/>
+            <line stroke="#162031" stroke-dasharray="3 3" x1="0" x2="700" y1="155" y2="155"/>
+            <line class="baseline-line" x1="0" x2="700" [attr.y1]="chartPaths().avgY" [attr.y2]="chartPaths().avgY"/>
+            <path class="area-path" [attr.d]="chartPaths().area" fill="url(#expenseGradientTx)"/>
+            <path class="line-path" [attr.d]="chartPaths().line" filter="url(#neonGlowTx)"/>
+            @for (point of chartPaths().pts; track $index) {
+              <circle class="chart-point" [attr.cx]="point.x" [attr.cy]="point.y" r="4.5"
+                      [attr.fill]="$last ? '#F21D5A' : '#0A0E16'"
+                      [attr.stroke]="$last ? '#ffffff' : (point.value === chartMax() ? '#19DCE8' : '#F21D5A')"
+                      [attr.stroke-width]="$last ? 2.5 : 2"/>
+            }
+          </svg>
+        </div>
+        <div class="chart-xlabels">
+          @for (lbl of chartLabels(); track $index) {
+            <span class="chart-xlabel" [class.chart-xlabel--active]="$last">{{ lbl }}</span>
+          }
+        </div>
+      </div>
+
+      <div class="chart-card cats-card">
+        <h3 class="table-title">Por Categoría</h3>
+        <span class="cats-period">{{ currentMonthLabel() }}</span>
+        <div class="cats-list">
+          @for (cat of categorySplit(); track cat.name) {
+            <div class="cat-item">
+              <div class="cat-meta">
+                <span class="cat-name"><span class="cat-dot" [style.background]="cat.color"></span>{{ cat.name }}</span>
+                <span class="cat-amount">Q {{ formatQ(cat.amount) }} <span class="cat-pct">({{ cat.pct }}%)</span></span>
+              </div>
+              <div class="cats-bar"><div class="cats-bar-fill" [style.background]="cat.color" [style.width.%]="cat.pct"></div></div>
+            </div>
+          } @empty {
+            <div class="cats-empty">Sin egresos en el mes actual</div>
+          }
+        </div>
+        <div class="cats-footer"><span>Presupuesto límite</span><span class="stat-value stat-value--cyan">{{ presupuestoMensual() > 0 ? 'Q ' + formatQ(presupuestoMensual()) : 'Sin definir' }}</span></div>
+      </div>
+    </section>
+    <div class="table-card">
+      <h3 class="table-title">Últimos Egresos Registrados <span class="table-count">{{ filteredEgresos().length }} de {{ egresos().length }}</span></h3>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Comercio / Detalle</th>
+              <th>Categoría</th>
+              <th>Fecha</th>
+              <th>Monto</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (egreso of filteredEgresos(); track egreso.id) {
+              <tr>
+                <td>
+                  <span class="cell-origin">
+                    <span class="type-dot" [style.background]="getCategoryColor(egreso.category, '#F21D5A')"></span>
+                    <span class="tx-block">
+                      <span class="tx-name">{{ egreso.description || 'Egreso' }}</span>
+                      <span class="tx-sub">ID: {{ shortId(egreso.id) }}</span>
+                    </span>
+                  </span>
+                </td>
+                <td>
+                  <span class="tx-chip" [style.color]="getCategoryColor(egreso.category, '#19DCE8')">{{ getCategoryName(egreso.category) || 'Sin categoría' }}</span>
+                </td>
+                <td>{{ formatDateEs(egreso.date) }}</td>
+                <td [style.color]="'#F21D5A'">-Q {{ formatQ(egreso.amount) }}</td>
+                <td>
+                  <div class="row-actions">
+                    <button class="btn-action" type="button" (click)="openEdit(egreso)">Editar</button>
+                    @if (isAdmin()) {
+                      <button class="btn-action btn-action--danger" type="button" (click)="deleteEgreso(egreso.id)">Eliminar</button>
+                    }
+                  </div>
+                </td>
+              </tr>
+            } @empty {
+              <tr><td colspan="5" class="table-empty-cell">Sin egresos registrados aún</td></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+  <aside class="right">
+    <div class="card-stat card-stat--total">
+      <span class="stat-label">Total egresos (mes)</span>
+      <span class="stat-value stat-value--red">Q {{ formatQ(egresosMes()) }}</span>
+    </div>
+
+    <div class="card-stat card-stat--gastos">
+      <span class="stat-label">Mayor gasto</span>
+      <span class="stat-value stat-value--cyan">Q {{ formatQ(gastoMaximo().amount) }}</span>
+    </div>
+
+    <div class="card-stat card-stat--ahorro">
+      <span class="stat-label">Saldo disponible</span>
+      <span class="stat-value stat-value--white">Q {{ formatQ(saldoDisponible()) }}</span>
+      <div class="ahorro-bar" [style.background]="'linear-gradient(90deg, var(--cyan) ' + presupuestoUsadoPct() + '%, rgba(255,255,255,0.08) ' + presupuestoUsadoPct() + '%)'"></div>
+    </div>
+
+    <div class="right-actions">
+      <button class="btn-cyan btn-cyan--outline" type="button" routerLink="/dashboard">Volver al panel</button>
+    </div>
+  </aside>
+  @if (showModal()) {
+    <div class="modal-overlay" (click)="closeModal()">
+      <div class="modal-card" (click)="$event.stopPropagation()">
+        <h3>{{ editingId() ? 'Editar Egreso' : 'Registrar Gasto' }}</h3>
+
+        @if (error()) {
+          <div class="error-banner error-banner--danger">{{ error() }}</div>
+        }
+
+        <label>
+          <span>Detalle / Descripción</span>
+          <input type="text" [(ngModel)]="formDescription" placeholder="Ej. Supermercado La Torre" />
+        </label>
+
+        <div class="form-row">
+          <label>
+            <span>Monto (Q)</span>
+            <input type="number" [(ngModel)]="formAmount" placeholder="0.00" min="0" step="0.01" />
+          </label>
+          <label>
+            <span>Fecha</span>
+            <input type="date" [(ngModel)]="formDate" />
+          </label>
+        </div>
+
+        <label>
+          <span>Categoría</span>
+          <div class="cat-select-row">
+            <select [(ngModel)]="formCategory">
+              <option [ngValue]="null">Sin categoría</option>
+              @for (cat of categories(); track cat.id) {
+                <option [ngValue]="cat.id">{{ cat.name }}</option>
+              }
+            </select>
+            <button class="btn-small" type="button" (click)="showCategoryForm.set(!showCategoryForm())">+ Nueva</button>
+          </div>
+        </label>
+
+        @if (showCategoryForm()) {
+          <div class="category-form">
+            <strong>Nueva categoría (dinámica)</strong>
+            <input type="text" [(ngModel)]="catName" placeholder="Nombre (ej. Vivienda)" />
+            <div class="form-row">
+              <input type="text" [(ngModel)]="catIcon" placeholder="Icono (work, gas...)" />
+              <input type="color" [(ngModel)]="catColor" />
+              <input type="number" [(ngModel)]="catBudget" placeholder="Presupuesto" />
+            </div>
+            <button class="btn-cyan btn-cyan--solid" type="button" (click)="createCategory()">Crear categoría</button>
+          </div>
+        }
+
+        <div class="modal-actions">
+          <button class="btn-cyan btn-cyan--outline" type="button" (click)="closeModal()">Cancelar</button>
+          <button class="btn-add-card modal-primary" type="button" (click)="save()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  }
+
+  @if (sessionExpired()) {
+    <div class="session-modal" role="alertdialog" aria-modal="true" aria-labelledby="expired-title">
+      <div class="session-modal-card">
+        <span class="session-modal-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
+          </svg>
+        </span>
+        <h2 id="expired-title">Su sesión ha caducado, por favor inicie sesión nuevamente</h2>
+        <button class="btn-back" type="button" (click)="backToLogin()">Ir al login</button>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,221 @@
+<div class="dashboard">
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo-area">
+      <div class="logo-img">
+        <img src="assets/logo.png" alt="FINTECH Logo" />
+      </div>
+      <span class="logo-kicker">FINTECH</span>
+      <span class="logo-title">Control de Gastos</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a class="nav-link" routerLink="/dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+        </svg>
+        <span>Principal</span>
+      </a>
+      <a class="nav-link" routerLink="/transacciones">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+          <polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+        </svg>
+        <span>Ver transacciones</span>
+      </a>
+      <a class="nav-link" routerLink="/ingresos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"/><path d="M12 6v12M8 10h8M9 14h6"/>
+        </svg>
+        <span>Ingresos</span>
+      </a>
+      <a class="nav-link nav-link--active" routerLink="/tarjeta">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/>
+        </svg>
+        <span>Mi tarjeta</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user">
+      <div class="user-row">
+        <div class="user-avatar">
+          <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <defs>
+              <linearGradient id="avatarGradT" x1="6" y1="10" x2="26" y2="28" gradientUnits="userSpaceOnUse">
+                <stop offset="0%" stop-color="#19DCE8" stop-opacity="0.95"/>
+                <stop offset="100%" stop-color="#F21D5A" stop-opacity="0.95"/>
+              </linearGradient>
+            </defs>
+            <circle cx="16" cy="11.6" r="5.2" fill="#8EA0B1"/>
+            <path d="M7.2 23.4c0-2.75 3.95-5 8.8-5s8.8 2.25 8.8 5v1.55c0 1.85-2.15 3.4-5.55 4.05 -1.35 0.25-2.55 0.35-3.25 0.35 -3.15 0-5.55-1.15-5.55-2.95v-3z" fill="#8EA0B1"/>
+            <path d="M7.2 23.4c0-2.75 3.95-5 8.8-5s8.8 2.25 8.8 5v1.55c0 1.85-2.15 3.4-5.55 4.05 -1.35 0.25-2.55 0.35-3.25 0.35 -3.15 0-5.55-1.15-5.55-2.95v-3z" fill="url(#avatarGradT)" opacity="0.38"/>
+          </svg>
+        </div>
+        <span class="user-name">{{ name() || 'admin' }}</span>
+      </div>
+      <button class="btn-logout" type="button" (click)="logout()">Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- CENTER PANEL -->
+  <main class="center">
+    <div class="center-header">
+      <h1 class="center-title">Mi Tarjeta Virtual.</h1>
+      <span class="status-badge" [class.status-badge--frozen]="isFrozen()">
+        {{ isFrozen() ? 'CONGELADA' : 'ACTIVA' }}
+      </span>
+    </div>
+
+    <div class="center-body">
+      @if (card(); as c) {
+        <!-- TARJETA VISUAL -->
+        <div class="credit-card" [class.credit-card--frozen]="isFrozen()">
+          <div class="card-shine" aria-hidden="true"></div>
+          <div class="card-top">
+            <span class="card-brand">FINTECH</span>
+            <span class="card-type">DEBIT</span>
+          </div>
+          <div class="card-mid">
+            <div class="card-chip" aria-hidden="true">
+              <svg viewBox="0 0 36 26" fill="none" stroke="#0a0e16" stroke-width="1.4">
+                <rect x="1" y="1" width="34" height="24" rx="4" fill="#e8c15a" stroke="#b8933f"/>
+                <path d="M1 9h10M1 17h10M25 9h10M25 17h10M11 1v24M25 1v24M11 9h14M11 17h14"/>
+              </svg>
+            </div>
+            <div class="card-contactless" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2" stroke-linecap="round">
+                <path d="M6 8a8 8 0 0 1 0 8M9.5 5.5a12 12 0 0 1 0 13M13 3a16 16 0 0 1 0 18"/>
+              </svg>
+            </div>
+          </div>
+          <div class="card-number">{{ revealed() ? c.number : maskedNumber() }}</div>
+          <div class="card-bottom">
+            <div class="card-field card-field--holder">
+              <span>TITULAR</span>
+              <strong>{{ c.holder }}</strong>
+            </div>
+            <div class="card-field">
+              <span>VENCE</span>
+              <strong>{{ c.expiry }}</strong>
+            </div>
+            <div class="card-field">
+              <span>CVV</span>
+              <strong>{{ revealed() ? c.cvv : '•••' }}</strong>
+            </div>
+          </div>
+          @if (isFrozen()) {
+            <div class="card-frozen-overlay">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+              </svg>
+              <span>TARJETA CONGELADA</span>
+            </div>
+          }
+        </div>
+
+        <!-- ACCIONES -->
+        <div class="card-actions">
+          <button class="btn-cyan btn-cyan--solid" type="button" (click)="toggleReveal()">
+            {{ revealed() ? 'Ocultar datos' : 'Mostrar datos' }}
+          </button>
+          <button class="btn-cyan btn-cyan--outline" type="button" (click)="copyNumber()">
+            {{ copied() ? '¡Número copiado!' : 'Copiar número' }}
+          </button>
+          <button class="btn-freeze" type="button" (click)="toggleFreeze()" [disabled]="freezeLoading()">
+            {{ freezeLoading() ? 'Procesando…' : (isFrozen() ? 'Descongelar tarjeta' : 'Congelar tarjeta') }}
+          </button>
+        </div>
+
+        <!-- ÚLTIMOS MOVIMIENTOS -->
+        <div class="table-card">
+          <div class="table-head">
+            <h3 class="table-title">Últimos movimientos de la tarjeta</h3>
+            <span class="table-count">{{ movimientos().length }} de {{ movimientosCount() }} egresos</span>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Descripción</th>
+                  <th>Fecha</th>
+                  <th>Categoría</th>
+                  <th>Quetzales</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of movimientos(); track row.id) {
+                  <tr>
+                    <td>
+                      <span class="cell-origin">
+                        <span class="type-dot type-dot--red"></span>
+                        {{ row.description || '—' }}
+                      </span>
+                    </td>
+                    <td>{{ row.date }}</td>
+                    <td>{{ row.categoryName || 'Gasto' }}</td>
+                    <td class="cell-amount">-Q {{ row.amount | number:'1.2-2' }}</td>
+                  </tr>
+                } @empty {
+                  <tr><td colspan="4" class="empty-row">Sin movimientos aún</td></tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      } @else if (loadError(); as err) {
+        <div class="load-error">{{ err }}</div>
+      } @else {
+        <div class="load-error">Cargando tarjeta…</div>
+      }
+    </div>
+  </main>
+
+  <!-- RIGHT PANEL -->
+  <aside class="right">
+    <div class="card-stat card-stat--total">
+      <span class="stat-label">Saldo disponible</span>
+      <span class="stat-value stat-value--cyan">Q {{ saldo() | number:'1.2-2' }}</span>
+    </div>
+
+    <div class="card-stat card-stat--gastos">
+      <span class="stat-label">Gastos del mes</span>
+      <span class="stat-value stat-value--red">Q {{ gastosMes() | number:'1.2-2' }}</span>
+    </div>
+
+    <div class="card-stat card-stat--ahorro">
+      <span class="stat-label">Movimientos con tarjeta</span>
+      <span class="stat-value stat-value--white">{{ movimientosCount() }}</span>
+    </div>
+
+    <div class="card-hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+      </svg>
+      <p>Tus datos se guardan de forma segura. Usa "Mostrar datos" solo cuando sea necesario.</p>
+    </div>
+
+    <div class="right-actions">
+      <button class="btn-cyan btn-cyan--solid" type="button" routerLink="/transacciones">Ver transacciones</button>
+      <button class="btn-cyan btn-cyan--outline" type="button" routerLink="/ingresos">Analizar ingresos y gastos</button>
+    </div>
+  </aside>
+
+  <!-- SESSION MODAL -->
+  @if (sessionExpired()) {
+    <div class="session-modal" role="alertdialog" aria-modal="true" aria-labelledby="expired-title-t">
+      <div class="session-modal-card">
+        <span class="session-modal-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/>
+          </svg>
+        </span>
+        <h2 id="expired-title-t">Su sesión ha caducado, por favor inicie sesión nuevamente</h2>
+        <button class="btn-back" type="button" (click)="backToLogin()">Ir al login</button>
+      </div>
+    </div>
+  }
+
+
+</div>

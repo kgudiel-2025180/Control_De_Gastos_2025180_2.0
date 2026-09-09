@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import 'dotenv/config';
 import { authRouter } from './routes/auth';
+import { cardsRouter } from './routes/cards';
 import { categoriesRouter } from './routes/categories';
 import { transactionsRouter } from './routes/transactions';
 
@@ -18,6 +19,7 @@ app.get('/health', (_req, res) => {
 app.use('/auth', authRouter);
 app.use('/categories', categoriesRouter);
 app.use('/transactions', transactionsRouter);
+app.use('/cards', cardsRouter);
 
 app.listen(PORT, () => {
   console.log(`API lista en http://localhost:${PORT}`);
