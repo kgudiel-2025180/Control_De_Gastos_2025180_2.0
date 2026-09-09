@@ -756,3 +756,38 @@
     transition: none !important;
   }
 }
+
+/* ── Divisor "o continúa con" ── */
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 18px 0 14px;
+
+  &::before,
+  &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0, 229, 255, 0.35), transparent);
+  }
+
+  span {
+    font-size: 11px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(226, 232, 240, 0.45);
+    white-space: nowrap;
+  }
+}
+
+/* ── Contenedor del botón de Google ── */
+.google-wrap {
+  display: flex;
+  justify-content: center;
+  min-height: 44px;
+
+  iframe {
+    border-radius: 999px !important;
+  }
+}

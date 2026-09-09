@@ -36,6 +36,18 @@ export class AuthService {
       );
   }
 
+  /** Inicia sesión con el ID token (credential) entregado por Google Identity Services */
+  loginWithGoogle(credential: string): Observable<LoginResponse> {
+    return this.http
+      .post<LoginResponse>(`${API_URL}/auth/google`, { credential })
+      .pipe(
+        map((res) => {
+          this.persistSession(res);
+          return res;
+        }),
+      );
+  }
+
   logout(): void {
     this.clearSession();
   }
